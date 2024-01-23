@@ -27,8 +27,9 @@ cultural_spaces_clean <-
          ownership
   )
 
-# remove redundant address columns like street number, street name, suite, city,
-# province, postal code, ward since they are also in the full_address
+# remove unecessary address columns like street number, street name, suite, city,
+# province, postal code, ward, full_address since they are not needed for the
+# final graph and analysis
 
 
 

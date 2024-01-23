@@ -20,5 +20,5 @@ cultural_spaces <-
   head(1) |>
   get_resource()
 
-write_csv(cultural_spaces, './output/data/cultural_spaces.csv')
+write_csv(cultural_spaces, './inputs/data/unedited_data.csv')
 

@@ -1,8 +1,13 @@
 ---
 title: "Cultural Spaces Report"
 author: "Janssen Myer Rambaud"
-format: html
+output:
+  pdf_document: default
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
 
 #### Preamble ####
 #### Note: Preamble template was provided by owner Rohan Alexander in
@@ -21,6 +26,7 @@ library(tidyverse)
 library(opendatatoronto)
 library(janitor)
 library(tidyr)
+library(knitr)
 ```
 
 Read and display a preview of the cleaned dataset from 01-data_cleaning.R
@@ -37,6 +43,7 @@ For the graphs, it would be best to show whether or not there is a difference
 in the 'type' of cultural space (performance, visual arts exhibition, screen-based, library, multipurpose, heritage) based on whether the space is city-owned or by the people.
 
 ```{r}
+#| echo: false
 
 category <- 
   c('performance', 
