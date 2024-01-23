@@ -1,8 +1,40 @@
 ---
-title: "paper"
+title: "Locations of Cultural Spaces in Toronto and Their Correlation with Ownership and Facilities"
 author: "Janssen Myer Rambaud"
+date: today
+date-format: long
 format: pdf
 editor: visual
+toc: true
+number-sections: true
+bibliography: bibliography.bib
+abstract: "TODO: Abstract"
+thanks: "Code and data from this analysis are available at: https://github.com/foreverwoods/Cultural-Space-Ownership-Toronto.git"
 ---
 
-test
+```{r}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+library(opendatatoronto)
+library(janitor)
+library(tidyr)
+library(knitr)
+```
+
+## Introduction
+
+## Data
+
+### Location Mapping
+
+\[Mapping Graphic\]
+
+### Visualizing Ownership
+
+### Findings
+
+### Conclusions 
+
+## References
