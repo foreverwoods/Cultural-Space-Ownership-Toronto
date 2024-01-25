@@ -1,7 +1,7 @@
 # Locations of Cultural Spaces in Toronto and Their Correlation with Ownership and Facilities
 
 ## Overview
-
+With cultural spaces being a big part of the local community, it would be interesting to determine if there was a correlation between its ownership status, its location, and its facility type.
 
 ## File Structure
 
