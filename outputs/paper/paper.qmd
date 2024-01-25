@@ -1,19 +1,19 @@
 ---
 title: "Locations of Cultural Spaces in Toronto and Their Correlation with Ownership and Facilities"
 author: "Janssen Myer Rambaud"
+thanks: "Code and data are available at: https://github.com/foreverwoods/Cultural-Space-Ownership-Toronto.git"
 date: today
 date-format: long
+abstract: "Cultural spaces in Toronto are essential to the the city's residents and establishing closer connections within the local community. The data used is retrieved using opendatatoronto to access a compiled dataset from 2013 of a 5-year study. By analyzing this dataset of cultural spaces, one can uncover new understandings of how location, ownership, and type of facility correlate and relate to the success of an establishment."
 format: pdf
-editor: visual
-toc: true
 number-sections: true
-bibliography: bibliography.bib
-abstract: "TODO: Abstract"
-thanks: "Code and data from this analysis are available at: https://github.com/foreverwoods/Cultural-Space-Ownership-Toronto.git"
+toc: true
+bibliography: references.bib
 ---
 
 ```{r}
-#| echo: false
+#| include: false
+#| warning: false
 #| message: false
 
 library(tidyverse)
@@ -23,18 +23,71 @@ library(tidyr)
 library(knitr)
 ```
 
-## Introduction
+# Introduction
 
-## Data
+With cultural spaces being a big part of the local community, it would be interesting to determine if there was a correlation between its ownership status, its location, and its facility type. From there it would be good to gauge 'success' based on the number of facilities open of that type, since the provided parameters are insufficient to go more in-depth. By considering the total number of facilities, it can be attributed to being more 'in demand', thus an assumption that a more in demand facility can be attributed to a successful field. That is what will be analyzed in this report, with a map of the locations of the cultural spaces as well as a graph of the number of facilities of each type, as well as its ownership status.
 
-### Location Mapping
+# Data {#sec-data}
 
-\[Mapping Graphic\]
+The data used is from the most recent Cultural Spaces data set in 2013 which was provided by the Toronto Open Data portal using opendatatoronto @citeopendatatoronto.
 
-### Visualizing Ownership
+The following packages were used as well: - R @citeR: language used for development - ggplot @citeggplot: plotting data - dplyr @citedplyr: data manipulation - tidyverse @citetidyverse: data presentation - janitor @citejanitor: data cleaning - tidygeocoder @citetidygeocoder: address to coordinates
 
-### Findings
+```{r}
+#| label: fig-planes
+#| fig-cap: Relationship between wing length and width
+#| echo: false
+#| warning: false
+#| message: false
 
-### Conclusions 
 
-## References
+cultural_spaces <- read_csv("../data/analysis_data_no_addr.csv")
+
+cultural_spaces[] <-  lapply(cultural_spaces, tolower)
+
+category <- 
+  c('performance', 
+    'exhibition_visual_arts', 
+    'screen_based', 
+    'library', 
+    'multipurpose', 
+    'heritage')
+
+# since splitting into grouped bars, its best to use gather to combine to keep count
+grouped_data <- 
+  gather(cultural_spaces, key = "category", value = "count", -ownership)
+
+# handle the category elements
+grouped_data$category <- 
+  factor(grouped_data$category, levels = category)
+
+# handle the count elements, need this for the summarize since not everything is numeric
+grouped_data$count <- 
+  as.numeric(grouped_data$count)
+
+
+# summarize and count individual values before putting into plot
+df <- 
+  grouped_data |>
+  group_by(category, ownership) |>
+  summarize(total = sum(count, na.rm = TRUE)) # remove 'NA' values
+
+ggplot(df, 
+       aes(x = category, 
+           y = total, 
+           fill = ownership)) +
+  geom_col(position='dodge') +  # dodge is for grouped plot
+  labs(x = 'Category', y = 'Count') +
+  ggtitle('Cultural Space in Relation to Ownership') +
+  theme(axis.text.x=element_text(angle=60, hjust=1))
+  
+```
+
+As you can see, a majority of the cultural space is owned by others, followed by city owned, then by city operated. It is also evident that performance and multipurpose cultural spaces are the most frequent cultural space type of the bunch. An interesting analysis is that library is completely owned and operated by the city, not a single branch is owned by others. \`\`\`
+
+![Map of Cultural Spaces in Toronto](../visuals/map.png) Looking at this map you can see that it majority of the cultural spaces begin in the center of Toronto (Downtown area) and spread out further and further away. The concentration as it spreads further also decreases. \newpage
+
+# Conclusion
+There does not seem to be much of a general correlation between location of the cultural space facilities and their ownership. There is one intriguing statistic where libraries seem to be split ownership between city owned and owned by others, one can attribute this to educational institutions being classified as "others" and own their own fair share of libraries of a relatively equal amount compared to Toronto's own 'Toronto Public Libraries'. One would think that with the bigger concentration of facilities in the downtown area, a place where you may find more ownership of municipal buildings, making sense since there are a denser population of people that would require more branches/buildings to accommodate; there would be more city owned/controlled buildings, but its seems that it is not the case. By measures of 'success', as previously define, the more of a specific facility type there is would be a good assumption that it is 'good for business', but it truly does not seem to be a general correlation between the ownership and location. One can argue that if you were to go specifically into the type of facilities, you can find some correlations, i.e. performance spaces are majority owned by others, which makes sense as they are generally a private facility (dance studios, etc.). Overall, it seems the initial assumption was not shown to be true and that there may need to be further research, or a more in-depth dataset to discover if there are any true correlations after all.
+
+# References
